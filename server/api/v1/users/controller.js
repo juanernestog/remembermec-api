@@ -24,8 +24,15 @@ exports.list = async (req, res, next) => {
   const { limit, skip, page } = paginationParams(query);
 
   try {
-    const docs = await Model.find({}).skip(skip).limit(limit).exec();
-    const total = await Model.countDocuments(docs);
+    console.log('list', query);
+
+    const data = await Promise.all([
+      Model.find({}).skip(skip).limit(limit).exec(),
+      Model.countDocuments(),
+    ]);
+    console.log(data);
+    const [docs, total] = data;
+
     const pages = Math.ceil(total / limit);
     res.json({
       data: docs,
