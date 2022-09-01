@@ -25,12 +25,23 @@ exports.create = async (req, res, next) => {
   }
 };
 
-exports.read = (req, res) => {
+exports.read = async (req, res, next) => {
   const { params = {} } = req;
   const { id } = params;
-  res.json({
-    user: id,
-  });
+
+  try {
+    const doc = await Model.findById({ _id: id });
+    if (!doc) {
+      const message = 'User not found';
+      next({ message, statsCode: 404 });
+    } else {
+      res.json({
+        data: doc,
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.update = (req, res) => {
