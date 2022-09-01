@@ -9,7 +9,11 @@ exports.create = (req, res) => {
 };
 
 exports.read = (req, res) => {
-  res.json({});
+  const { params = {} } = req;
+  const { id } = params;
+  res.json({
+    user: id,
+  });
 };
 
 exports.update = (req, res) => {
