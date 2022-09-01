@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const { statusCode = '500', message = '', level = 'error' } = err;
+  const { statusCode = 500, message = '', level = 'error' } = err;
 
   logger[level](message);
 
