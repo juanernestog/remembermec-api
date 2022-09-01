@@ -1,8 +1,11 @@
 const express = require('express');
+const logger = require('./config/logger');
+
 const api = require('./api/v1');
 
 const app = express();
 
+app.use(logger.request);
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -22,7 +25,10 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const { statusCode = '500', message = '' } = err;
+  const { statusCode = '500', message = '', level = 'error' } = err;
+
+  logger[level](message);
+
   res.status(statusCode);
   res.json({
     message,
