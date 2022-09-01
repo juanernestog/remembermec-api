@@ -2,11 +2,8 @@ const express = require('express');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
+const users = require('./users/routes');
 
-router.route('/users').get((req, res) => {
-  res.json({
-    users: [{ name: 'John', email: 'John@example.com' }],
-  });
-});
+router.use('/users', users);
 
 module.exports = router;
