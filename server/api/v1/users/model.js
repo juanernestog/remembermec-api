@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const fields = {
   name: { type: String, required: true },
@@ -20,4 +21,8 @@ const fields = {
   userType: { type: String, required: true, default: 'user' },
 };
 
-module.exports = mongoose.model('users', fields);
+const user = new Schema(fields, {
+  timestamps: true,
+});
+
+module.exports = mongoose.model('user', user);
