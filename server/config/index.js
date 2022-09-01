@@ -8,6 +8,12 @@ const config = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
   },
+  //  default pagination settings
+  pagination: {
+    limit: 10,
+    skip: 0,
+    page: 1,
+  },
 };
 
 module.exports = config;
