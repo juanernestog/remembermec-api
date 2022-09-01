@@ -1,5 +1,23 @@
 const Model = require('./model');
 
+exports.id = async (req, res, next) => {
+  const { params = {} } = req;
+  const { id } = params;
+
+  try {
+    const doc = await Model.findById({ _id: id });
+    if (!doc) {
+      const message = 'User not found';
+      next({ message, statsCode: 404 });
+    } else {
+      req.doc = doc;
+      next();
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.list = async (req, res) => {
   try {
     const docs = await Model.find({}).exec();
@@ -26,28 +44,41 @@ exports.create = async (req, res, next) => {
 };
 
 exports.read = async (req, res, next) => {
-  const { params = {} } = req;
-  const { id } = params;
+  const { doc = {} } = req;
+
+  res.json({
+    data: doc,
+  });
+};
+
+exports.update = async (req, res) => {
+  const { doc = {}, body = {} } = req;
+
+  Object.assign(doc, body);
 
   try {
-    const doc = await Model.findById({ _id: id });
-    if (!doc) {
-      const message = 'User not found';
-      next({ message, statsCode: 404 });
-    } else {
-      res.json({
-        data: doc,
-      });
-    }
+    const updated = await doc.save();
+
+    res.json({
+      data: updated,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-exports.update = (req, res) => {
-  res.json({});
-};
+exports.delete = async (req, res) => {
+  const { doc = {} } = req;
 
-exports.delete = (req, res) => {
-  res.json({});
+  Object.assign(doc, body);
+
+  try {
+    const deleted = await doc.remove();
+
+    res.json({
+      data: deleted,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
