@@ -18,7 +18,7 @@ exports.id = async (req, res, next) => {
   }
 };
 
-exports.list = async (req, res) => {
+exports.list = async (req, res, next) => {
   try {
     const docs = await Model.find({}).exec();
     res.json({
@@ -51,7 +51,7 @@ exports.read = async (req, res, next) => {
   });
 };
 
-exports.update = async (req, res) => {
+exports.update = async (req, res, next) => {
   const { doc = {}, body = {} } = req;
 
   Object.assign(doc, body);
@@ -67,7 +67,7 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.delete = async (req, res) => {
+exports.delete = async (req, res, next) => {
   const { doc = {} } = req;
 
   Object.assign(doc, body);
