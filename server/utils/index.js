@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 const config = require('../config');
 
-const { pagination } = config;
+const { pagination, sort } = config;
 
 function paginationParams({
   limit = pagination.limit,
@@ -15,6 +15,23 @@ function paginationParams({
   };
 }
 
+const sortParams = (
+  { sortBy = sort.sortBy.default, direction = sort.direction.default },
+  fields,
+) => {
+  const allowList = {
+    sortBy: [...sort.sortBy.fields, ...Object.getOwnPropertyNames(fields)],
+    direction: sort.direction.options,
+  };
+  return {
+    sortBy: allowList.sortBy.includes(sortBy) ? sortBy : sort.sortBy.default,
+    direction: allowList.direction.includes(direction)
+      ? direction
+      : sort.direction.default,
+  };
+};
+
 module.exports = {
   paginationParams,
+  sortParams,
 };

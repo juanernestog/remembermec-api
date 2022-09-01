@@ -1,5 +1,5 @@
-const Model = require('./model');
-const { paginationParams } = require('../../../utils');
+const { Model, fields } = require('./model');
+const { paginationParams, sortParams } = require('../../../utils');
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
@@ -8,7 +8,7 @@ exports.id = async (req, res, next) => {
   try {
     const doc = await Model.findById({ _id: id });
     if (!doc) {
-      const message = 'User not found';
+      const message = `${Model.name} not found`;
       next({ message, statsCode: 404 });
     } else {
       req.doc = doc;
@@ -22,18 +22,26 @@ exports.id = async (req, res, next) => {
 exports.list = async (req, res, next) => {
   const { query = {} } = req;
   const { limit, skip, page } = paginationParams(query);
+  const { sortBy, direction } = sortParams(query, fields);
+  const sort = {
+    [sortBy]: direction,
+  };
+  // const populate = populateToObject(referencesNames, virtuals);
 
   try {
-    console.log('list', query);
-
     const data = await Promise.all([
-      Model.find({}).skip(skip).limit(limit).exec(),
+      Model.find({})
+        .skip(skip)
+        .limit(limit)
+        .sort(sort)
+        //  .populate(populate)
+        .exec(),
       Model.countDocuments(),
     ]);
-    console.log(data);
     const [docs, total] = data;
 
     const pages = Math.ceil(total / limit);
+
     res.json({
       data: docs,
       meta: {
@@ -41,6 +49,8 @@ exports.list = async (req, res, next) => {
         page,
         skip,
         limit,
+        sortBy,
+        direction,
       },
     });
   } catch (err) {
