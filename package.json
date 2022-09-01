@@ -1,0 +1,23 @@
+{
+  "name": "remembermec-api",
+  "version": "1.0.0",
+  "description": "Rest API for maintenance tracking",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index",
+    "start": "node index",
+    "test": "jest"
+  },
+  "keywords": [
+    "Express",
+    "Node"
+  ],
+  "author": "juanernestog",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.23.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "nodemon": "^2.0.19"
+  }
+}
