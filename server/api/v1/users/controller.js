@@ -1,9 +1,14 @@
 const Model = require('./model');
 
-exports.list = (req, res) => {
-  res.json({
-    users: [{ name: 'John1', email: 'John@example.com' }],
-  });
+exports.list = async (req, res) => {
+  try {
+    const docs = await Model.find({}).exec();
+    res.json({
+      data: docs,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.create = async (req, res, next) => {
