@@ -1,4 +1,5 @@
 const express = require('express');
+const api = require('./api/v1');
 
 const app = express();
 
@@ -7,6 +8,9 @@ app.get('/', (req, res) => {
     message: 'Server runs',
   });
 });
+
+app.use('/api', api);
+app.use('/api/v1', api);
 
 app.use((req, res, next) => {
   next({
