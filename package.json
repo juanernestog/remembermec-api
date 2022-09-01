@@ -4,9 +4,9 @@
   "description": "Rest API for maintenance tracking",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index",
-    "start": "node index",
-    "test": "jest"
+    "dev": "cross-env NODE_ENV=development nodemon index",
+    "start": "cross-env NODE_ENV=production node index",
+    "test": "cross-env NODE_ENV=test jest"
   },
   "keywords": [
     "Express",
@@ -21,6 +21,7 @@
     "nodemon": "^2.0.19"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "express": "^4.18.1"
   }
 }

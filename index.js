@@ -1,11 +1,10 @@
 const http = require('http');
 const app = require('./server');
 
-const hostname = '127.0.0.1';
-const port = 3000;
+const config = require('./server/config');
 
 const server = http.createServer(app);
 
-server.listen(port, hostname, () => {
-  console.log(`Listening on ${hostname}:${port}`);
+server.listen(config.port, () => {
+  console.log(`Listening on ${config.port}`);
 });
