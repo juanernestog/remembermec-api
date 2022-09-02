@@ -4,7 +4,10 @@ const {
   sortParams,
   populateToObject,
 } = require('../../../utils');
-const referencesNames = Object.getOwnPropertyNames(refereces);
+const referencesNames = [
+  ...Object.getOwnPropertyNames(refereces),
+  ...Object.getOwnPropertyNames(virtuals),
+];
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;

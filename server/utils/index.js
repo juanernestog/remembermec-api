@@ -37,9 +37,9 @@ const populateToObject = (populateNames, virtuals = {}) => {
     let options = {};
     if (virtualNames.includes(item)) {
       options = {
-        limit: populate.virtuals.limit,
+        limit: config.populate.virtuals.limit,
         sort: {
-          [populate.virtuals.sort]: populate.virtuals.direction,
+          [config.populate.virtuals.sort]: config.populate.virtuals.direction,
         },
       };
     }

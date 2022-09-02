@@ -19,6 +19,8 @@ const refereces = {
   machineId: { type: mongoose.ObjectId, ref: 'machine', required: true },
 };
 
+const virtuals = {};
+
 const maintenance = new Schema(Object.assign(fields, refereces), {
   timestamps: true,
 });
@@ -27,4 +29,5 @@ module.exports = {
   Model: mongoose.model('maintenance', maintenance),
   fields,
   refereces,
+  virtuals,
 };
