@@ -15,6 +15,7 @@ const fields = {
 };
 
 const refereces = {
+  userId: { type: mongoose.ObjectId, ref: 'user', required: true },
   machineId: { type: mongoose.ObjectId, ref: 'machine', required: true },
 };
 
