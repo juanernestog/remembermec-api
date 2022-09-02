@@ -26,16 +26,10 @@ exports.list = async (req, res, next) => {
   const sort = {
     [sortBy]: direction,
   };
-  // const populate = populateToObject(referencesNames, virtuals);
 
   try {
     const data = await Promise.all([
-      Model.find({})
-        .skip(skip)
-        .limit(limit)
-        .sort(sort)
-        //  .populate(populate)
-        .exec(),
+      Model.find({}).skip(skip).limit(limit).sort(sort).exec(),
       Model.countDocuments(),
     ]);
     const [docs, total] = data;

@@ -8,14 +8,19 @@ const fields = {
   description: { type: String, required: false },
   numberPlate: { type: String, required: false },
   aquisitionDate: { type: Date, required: false },
-  Maintenance: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Maintenance' }],
+  //  Maintenance: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Maintenance' }],
 };
 
-const machine = new Schema(fields, {
+const refereces = {
+  userId: { type: mongoose.ObjectId, ref: 'user', required: true },
+};
+
+const machine = new Schema(Object.assign(fields, refereces), {
   timestamps: true,
 });
 
 module.exports = {
   Model: mongoose.model('machine', machine),
   fields,
+  refereces,
 };

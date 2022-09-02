@@ -1,5 +1,6 @@
-const { Model, fields } = require('./model');
+const { Model, fields, refereces } = require('./model');
 const { paginationParams, sortParams } = require('../../../utils');
+const referencesNames = Object.getOwnPropertyNames(refereces);
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
@@ -26,7 +27,7 @@ exports.list = async (req, res, next) => {
   const sort = {
     [sortBy]: direction,
   };
-  // const populate = populateToObject(referencesNames, virtuals);
+  const populate = referencesNames.join(' ');
 
   try {
     const data = await Promise.all([
@@ -34,7 +35,7 @@ exports.list = async (req, res, next) => {
         .skip(skip)
         .limit(limit)
         .sort(sort)
-        //  .populate(populate)
+        .populate(populate)
         .exec(),
       Model.countDocuments(),
     ]);
