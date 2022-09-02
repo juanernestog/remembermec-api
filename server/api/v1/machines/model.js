@@ -43,4 +43,5 @@ module.exports = {
   Model: mongoose.model('machine', machine),
   fields,
   refereces,
+  virtuals,
 };
