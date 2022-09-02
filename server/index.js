@@ -14,8 +14,8 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api', api);
-app.use('/api/v1', api);
+app.use('/api', api); // update to the latest version
+app.use('/api/v1', api); // access the specified version
 
 app.use((req, res, next) => {
   next({

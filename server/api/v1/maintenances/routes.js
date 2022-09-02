@@ -5,11 +5,11 @@ const controller = require('./controller');
 const router = express.Router();
 
 /*
- * /api/users GET -> LIST
- * /api/users POST -> CREATE
- * /api/users/:id GET -> READ
- * /api/users/:id PUT -> UPDATE
- * /api/users/:id DELETE -> DELETE
+ * /api/maintenances GET -> LIST
+ * /api/maintenances POST -> CREATE
+ * /api/maintenances/:id GET -> READ
+ * /api/maintenances/:id PUT -> UPDATE
+ * /api/maintenances/:id DELETE -> DELETE
  */
 
 router.route('/').get(controller.list).post(controller.create);
