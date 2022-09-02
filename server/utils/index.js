@@ -31,7 +31,27 @@ const sortParams = (
   };
 };
 
+const populateToObject = (populateNames, virtuals = {}) => {
+  const virtualNames = Object.getOwnPropertyNames(virtuals);
+  return populateNames.map((item) => {
+    let options = {};
+    if (virtualNames.includes(item)) {
+      options = {
+        limit: populate.virtuals.limit,
+        sort: {
+          [populate.virtuals.sort]: populate.virtuals.direction,
+        },
+      };
+    }
+    return {
+      path: item,
+      options,
+    };
+  });
+};
+
 module.exports = {
   paginationParams,
   sortParams,
+  populateToObject,
 };
