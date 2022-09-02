@@ -1,5 +1,9 @@
-const { Model, fields, refereces } = require('./model');
-const { paginationParams, sortParams } = require('../../../utils');
+const { Model, fields, refereces, virtuals } = require('./model');
+const {
+  paginationParams,
+  sortParams,
+  populateToObject,
+} = require('../../../utils');
 const referencesNames = Object.getOwnPropertyNames(refereces);
 
 exports.id = async (req, res, next) => {
@@ -27,7 +31,7 @@ exports.list = async (req, res, next) => {
   const sort = {
     [sortBy]: direction,
   };
-  const populate = referencesNames.join(' ');
+  const populate = populateToObject(referencesNames, virtuals);
 
   try {
     const data = await Promise.all([

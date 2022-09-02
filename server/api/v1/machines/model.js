@@ -17,7 +17,27 @@ const refereces = {
 
 const machine = new Schema(Object.assign(fields, refereces), {
   timestamps: true,
+  toJSON: {
+    virtuals: true,
+  },
 });
+
+const virtuals = {
+  maintenances: {
+    ref: 'maintenance',
+    localField: '_id',
+    foreignField: 'machineId',
+  },
+  maintenancesCount: {
+    ref: 'maintenance',
+    localField: '_id',
+    foreignField: 'machineId',
+    count: true,
+  },
+};
+
+machine.virtual('maintenances', virtuals.maintenances);
+machine.virtual('maintenancesCount', virtuals.maintenancesCount);
 
 module.exports = {
   Model: mongoose.model('machine', machine),
