@@ -105,13 +105,10 @@ exports.update = async (req, res, next) => {
 };
 
 exports.delete = async (req, res, next) => {
-  const { doc = {}, body = {} } = req;
-
-  Object.assign(doc, body);
+  const { doc = {} } = req;
 
   try {
     const deleted = await doc.remove();
-
     res.json({
       data: deleted,
     });
