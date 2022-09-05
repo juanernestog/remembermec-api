@@ -2,7 +2,9 @@ const express = require('express');
 const controller = require('./controller');
 
 // eslint-disable-next-line new-cap
-const router = express.Router();
+const router = express.Router({
+  mergeParams: true,
+});
 
 /*
  * /api/maintenances GET -> LIST

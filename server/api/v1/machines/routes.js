@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = require('./controller');
+const maintenancesRoutes = require('../maintenances/routes');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -22,4 +23,13 @@ router
   .put(controller.update)
   .delete(controller.delete);
 
+/*
+ * /api/machines/maintenances GET -> LIST
+ * /api/machines/maintenances POST -> CREATE
+ * /api/machines/:id/maintenances/:id GET -> READ
+ * /api/machines/:id/maintenances/:id PUT -> UPDATE
+ * /api/machines/:id/maintenances/:id DELETE -> DELETE
+ */
+
+router.use('/:machineId/maintenances', maintenancesRoutes);
 module.exports = router;
