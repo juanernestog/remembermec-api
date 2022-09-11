@@ -3,6 +3,7 @@ const controller = require('./controller');
 
 // eslint-disable-next-line new-cap
 const router = express.Router({
+  // needed for Nested Routes
   mergeParams: true,
 });
 

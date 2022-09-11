@@ -3,6 +3,7 @@ const {
   paginationParams,
   sortParams,
   populateToObject,
+  filterByNested,
 } = require('../../../utils');
 const referencesNames = [
   ...Object.getOwnPropertyNames(refereces),
@@ -28,23 +29,24 @@ exports.id = async (req, res, next) => {
 };
 
 exports.list = async (req, res, next) => {
-  const { query = {} } = req;
+  const { query = {}, params = {} } = req;
   const { limit, skip, page } = paginationParams(query);
   const { sortBy, direction } = sortParams(query, fields);
   const sort = {
     [sortBy]: direction,
   };
   const populate = populateToObject(referencesNames, virtuals);
+  const { filters /*  , populate2*/ } = filterByNested(params, referencesNames);
 
   try {
     const data = await Promise.all([
-      Model.find({})
+      Model.find({ filters })
         .skip(skip)
         .limit(limit)
         .sort(sort)
         .populate(populate)
         .exec(),
-      Model.countDocuments(),
+      Model.countDocuments(filters),
     ]);
     const [docs, total] = data;
 

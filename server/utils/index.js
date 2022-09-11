@@ -50,8 +50,20 @@ const populateToObject = (populateNames, virtuals = {}) => {
   });
 };
 
+const filterByNested = (params = {}, referencesNames = []) => {
+  const paramsNames = Object.getOwnPropertyNames(params);
+  const populateNames = referencesNames.filter(
+    (item) => !paramsNames.includes(item),
+  );
+  return {
+    filters: params,
+    populate: populateNames.join(''),
+  };
+};
+
 module.exports = {
   paginationParams,
   sortParams,
   populateToObject,
+  filterByNested,
 };
