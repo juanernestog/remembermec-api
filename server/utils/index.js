@@ -57,7 +57,7 @@ const filterByNested = (params = {}, referencesNames = []) => {
   );
   return {
     filters: params,
-    populate: populateNames.join(''),
+    populate: populateNames,
   };
 };
 
