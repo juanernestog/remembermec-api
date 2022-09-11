@@ -1,21 +1,41 @@
-const { Model, fields, refereces, virtuals } = require('./model');
+const { Model, fields, refereces } = require('./model');
+const { Model: Machine } = require('../machines/model');
+
 const {
   paginationParams,
   sortParams,
-  populateToObject,
+  //  populateToObject,
   filterByNested,
 } = require('../../../utils');
-const referencesNames = [
-  ...Object.getOwnPropertyNames(refereces),
-  ...Object.getOwnPropertyNames(virtuals),
-];
+const referencesNames = [...Object.getOwnPropertyNames(refereces)];
+
+exports.parentId = async (req, res, next) => {
+  const { params = {} } = req;
+  const { machineId = null } = params;
+
+  if (machineId) {
+    const doc = await Machine.findById(machineId);
+    if (doc) {
+      next();
+    } else {
+      const message = 'Machine not found';
+
+      next({
+        message,
+        statusCode: 404,
+      });
+    }
+  } else {
+    next();
+  }
+};
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
   const { id } = params;
 
   try {
-    const doc = await Model.findById({ _id: id });
+    const doc = await Model.findById(id);
     if (!doc) {
       const message = `${Model.name} not found`;
       next({ message, statsCode: 404 });
@@ -35,10 +55,12 @@ exports.list = async (req, res, next) => {
   const sort = {
     [sortBy]: direction,
   };
-  const populate = populateToObject(referencesNames, virtuals);
-  const { filters /*  , populate2*/ } = filterByNested(params, referencesNames);
+  // const populate = populateToObject(referencesNames);
+  // const filters = params.machineId ? params.machineId : {};
+  const { filters, populate } = filterByNested(params, referencesNames); // TODO: revisit funcionality
 
   try {
+    console.log(populate);
     const data = await Promise.all([
       Model.find({ filters })
         .skip(skip)
@@ -59,8 +81,6 @@ exports.list = async (req, res, next) => {
         page,
         skip,
         limit,
-        filters,
-        populate,
         sortBy,
         direction,
       },
