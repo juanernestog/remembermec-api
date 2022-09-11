@@ -59,6 +59,8 @@ exports.list = async (req, res, next) => {
         page,
         skip,
         limit,
+        filters,
+        populate,
         sortBy,
         direction,
       },
