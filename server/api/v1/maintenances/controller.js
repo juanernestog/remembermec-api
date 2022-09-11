@@ -1,11 +1,14 @@
-const { Model, fields, refereces } = require('./model');
+const { Model, fields, refereces, virtuals } = require('./model');
 const {
   paginationParams,
   sortParams,
   populateToObject,
   filterByNested,
 } = require('../../../utils');
-const referencesNames = [...Object.getOwnPropertyNames(refereces)];
+const referencesNames = [
+  ...Object.getOwnPropertyNames(refereces),
+  ...Object.getOwnPropertyNames(virtuals),
+];
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
