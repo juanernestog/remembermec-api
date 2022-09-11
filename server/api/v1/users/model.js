@@ -21,9 +21,21 @@ const fields = {
   userType: { type: String, required: true, default: 'user' },
 };
 
+const hiddenFields = ['password'];
+
 const user = new Schema(fields, {
   timestamps: true,
 });
+
+user.methods.toJSON = function () {
+  const doc = this.toObject();
+
+  hiddenFields.forEach((field) => {
+    delete doc[field];
+  });
+
+  return doc;
+};
 
 module.exports = {
   Model: mongoose.model('user', user),
