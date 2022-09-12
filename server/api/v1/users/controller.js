@@ -1,5 +1,5 @@
-const { Model, fields } = require('./model');
-const { paginationParams, sortParams } = require('../../../utils');
+const { Model } = require('./model');
+const { signToken } = require('../auth');
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
@@ -38,39 +38,29 @@ exports.signin = async (req, res, next) => {
         statsCode: 401,
       });
     }
-    res.json({ data: user });
+    const { _id: id } = user;
+    const token = signToken({ id, email: user.email });
+    res.json({
+      data: user,
+      meta: { token },
+    });
   } catch (error) {
     next(error);
   }
 };
 
 exports.signup = async (req, res, next) => {
-  const { query = {} } = req;
-  const { limit, skip, page } = paginationParams(query);
-  const { sortBy, direction } = sortParams(query, fields);
-  const sort = {
-    [sortBy]: direction,
-  };
+  const { body = {} } = req;
 
   try {
-    const data = await Promise.all([
-      Model.find({}).skip(skip).limit(limit).sort(sort).exec(),
-      Model.countDocuments(),
-    ]);
-    const [docs, total] = data;
+    const model = new Model(body);
+    const doc = await model.save();
 
-    const pages = Math.ceil(total / limit);
-
+    const { _id: id } = user;
+    const token = signToken({ id, email: user.email });
     res.json({
-      data: docs,
-      meta: {
-        pages,
-        page,
-        skip,
-        limit,
-        sortBy,
-        direction,
-      },
+      data: doc,
+      meta: { token },
     });
   } catch (err) {
     next(err);

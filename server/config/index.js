@@ -31,6 +31,10 @@ const config = {
       direction: 'desc',
     },
   },
+  token: {
+    secret: process.env.TOKEN_SECTRET,
+    expires: process.env.TOKEN_EXPIRES,
+  },
 };
 
 module.exports = config;
