@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const { hash, compare } = require('bcryptjs');
 
 const fields = {
   name: { type: String, required: true },
@@ -35,6 +36,17 @@ user.methods.toJSON = function () {
   });
 
   return doc;
+};
+
+user.pre('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
+    this.password = await hash(this.password, 10);
+  }
+  next();
+});
+
+user.methods.verifyPassword = function (input) {
+  return compare(input, this.password);
 };
 
 module.exports = {

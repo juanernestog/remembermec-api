@@ -19,7 +19,32 @@ exports.id = async (req, res, next) => {
   }
 };
 
-exports.list = async (req, res, next) => {
+exports.signin = async (req, res, next) => {
+  const { body = {} } = req;
+  const { email = '', password = '' } = body;
+
+  try {
+    const user = await Model.findOne({ email }).exec();
+    if (!user) {
+      return next({
+        message: 'Email or password invalid',
+        statsCode: 401,
+      });
+    }
+    const verified = await user.verifyPassword(password);
+    if (!verified) {
+      return next({
+        message: 'Email or password invalid',
+        statsCode: 401,
+      });
+    }
+    res.json({ data: user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.signup = async (req, res, next) => {
   const { query = {} } = req;
   const { limit, skip, page } = paginationParams(query);
   const { sortBy, direction } = sortParams(query, fields);
