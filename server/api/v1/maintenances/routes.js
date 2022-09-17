@@ -16,14 +16,17 @@ const router = express.Router({
  * /api/maintenances/:id DELETE -> DELETE
  */
 
-router.route('/').get(controller.list).post(auth, controller.create);
+router
+  .route('/')
+  .get(controller.parentId, controller.list)
+  .post(controller.parentId, auth, controller.create);
 
 router.param('id', controller.id);
 
 router
   .route('/:id')
-  .get(auth, controller.read)
-  .put(auth, controller.update)
-  .delete(auth, controller.delete);
+  .get(controller.parentId, auth, controller.read)
+  .put(controller.parentId, auth, controller.update)
+  .delete(controller.parentId, auth, controller.delete);
 
 module.exports = router;

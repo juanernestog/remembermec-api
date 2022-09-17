@@ -56,14 +56,11 @@ exports.signup = async (req, res, next) => {
     const model = new Model(body);
     const doc = await model.save();
 
-    const { _id: id } = user;
-    const token = signToken({ id, email: user.email });
-    res.json({
-      data: doc,
-      meta: { token },
-    });
-  } catch (err) {
-    next(err);
+    req.body.email = doc.email;
+    res
+    next();
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -107,8 +104,6 @@ exports.update = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
   const { doc = {} } = req;
-
-  Object.assign(doc, body);
 
   try {
     const deleted = await doc.remove();
