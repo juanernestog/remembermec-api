@@ -51,13 +51,18 @@ exports.signin = async (req, res, next) => {
 
 exports.signup = async (req, res, next) => {
   const { body = {} } = req;
-
   try {
     const model = new Model(body);
     const doc = await model.save();
 
+    const { _id: id } = doc;
+    const token = signToken({ id });
+
     req.body.email = doc.email;
-    res
+    res.json({
+      data: user,
+      meta: { token },
+    });
     next();
   } catch (error) {
     next(error);
