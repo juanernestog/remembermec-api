@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = require('./controller');
+const { auth, me } = require('../auth');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -22,7 +23,7 @@ router.param('id', controller.id);
 router
   .route('/:id')
   .get(controller.read)
-  .put(controller.update)
-  .delete(controller.delete);
+  .put(auth, me, controller.update)
+  .delete(auth, me, controller.delete);
 
 module.exports = router;

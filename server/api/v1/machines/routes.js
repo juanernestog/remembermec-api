@@ -26,7 +26,7 @@ router
 
 /*
  * /api/machines/maintenances GET -> LIST
- * /api/machines/maintenances POST -> CREATE
+ * /api/machines/:id/maintenances POST -> CREATE
  * /api/machines/:id/maintenances/:id GET -> READ
  * /api/machines/:id/maintenances/:id PUT -> UPDATE
  * /api/machines/:id/maintenances/:id DELETE -> DELETE

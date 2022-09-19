@@ -1,6 +1,6 @@
 const express = require('express');
 const controller = require('./controller');
-const { auth } = require('../auth');
+const { auth, owner } = require('../auth');
 
 // eslint-disable-next-line new-cap
 const router = express.Router({
@@ -16,17 +16,16 @@ const router = express.Router({
  * /api/maintenances/:id DELETE -> DELETE
  */
 
-router
-  .route('/')
-  .get(controller.parentId, controller.list)
-  .post(controller.parentId, auth, controller.create);
+router.route('/').get(controller.parentId, controller.list);
 
 router.param('id', controller.id);
 
+router.route('/').post(controller.parentId, auth, owner, controller.create);
+
 router
   .route('/:id')
-  .get(controller.parentId, auth, controller.read)
-  .put(controller.parentId, auth, controller.update)
-  .delete(controller.parentId, auth, controller.delete);
+  .get(controller.parentId, auth, owner, controller.read)
+  .put(controller.parentId, auth, owner, controller.update)
+  .delete(controller.parentId, auth, owner, controller.delete);
 
 module.exports = router;
