@@ -9,15 +9,43 @@ const referencesNames = [
   ...Object.getOwnPropertyNames(virtuals),
 ];
 
+// exports.id = async (req, res, next) => {
+//   const { params = {} } = req;
+//   const { id } = params;
+
+//   try {
+//     const doc = await Model.findById({ _id: id });
+//     if (!doc) {
+//       const message = `${Model.name} not found`;
+//       next({ message, statsCode: 404 });
+//     } else {
+//       req.doc = doc;
+//       next();
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
   const { id } = params;
+  const populate = populateToObject(referencesNames, virtuals);
 
   try {
-    const doc = await Model.findById({ _id: id });
+    const doc = await Model.findById({ _id: id })
+      .populate(populate)
+      .populate({
+        path: 'maintenances',
+        populate: {
+          path: 'userId',
+        },
+      });
     if (!doc) {
       const message = `${Model.name} not found`;
-      next({ message, statsCode: 404 });
+      next({
+        message,
+        statusCode: 404,
+      });
     } else {
       req.doc = doc;
       next();
