@@ -1,11 +1,13 @@
 const express = require('express');
 const logger = require('./config/logger');
+const cors = require('cors');
 
 const api = require('./api/v1');
 
 const app = express();
 
 app.use(logger.request);
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
