@@ -84,11 +84,25 @@ exports.create = async (req, res, next) => {
 };
 
 exports.read = async (req, res, next) => {
-  const { doc = {} } = req;
+  const { decoded = {}, body = {} } = req;
+  const { id } = decoded;
 
-  res.json({
-    data: doc,
-  });
+  try {
+    const doc = await Model.findOne({ id }, body);
+
+    if (doc) {
+      res.json({
+        data: doc,
+      });
+    } else {
+      next({
+        statusCode: 404,
+        message: 'User not found',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.update = async (req, res, next) => {

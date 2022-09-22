@@ -35,8 +35,11 @@ const auth = async (req, res, next) => {
 
 const owner = (req, res, next) => {
   const { decoded = {}, doc = {} } = req;
-  const { id: authId } = decoded;
-  const { userId } = doc;
+  const { _id: authId } = decoded;
+  const {
+    userId: { _id: userId },
+  } = doc;
+  console.log(userId, authId, userId.equals(authId));
 
   if (userId.equals(authId)) {
     next();

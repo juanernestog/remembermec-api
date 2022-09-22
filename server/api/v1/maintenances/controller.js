@@ -91,10 +91,13 @@ exports.list = async (req, res, next) => {
 };
 
 exports.create = async (req, res, next) => {
-  const { body = {} } = req;
-
+  console.log('Creating');
+  const { body = {}, params = {}, decoded = {} } = req;
+  const { id } = decoded;
+  const { machineId } = params;
+  console.log(body);
   try {
-    const model = new Model(body);
+    const model = new Model(Object.assign(body, { userId: id }, { machineId }));
     const doc = await model.save();
     res.status(201).json({
       data: doc,

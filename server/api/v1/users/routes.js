@@ -21,7 +21,7 @@ router.route('/signin').post(controller.signin);
 router.param('id', controller.id);
 
 router
-  .route('/:id')
+  .route('/')
   .get(controller.read)
   .put(auth, me, controller.update)
   .delete(auth, me, controller.delete);
